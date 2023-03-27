@@ -1,68 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>간단한 계산기</title>
-    <style>
-      .calculator {
-        width: 200px;
-        border: 1px solid black;
-        padding: 10px;
-        margin: auto;
-      }
-      input[type="button"] {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
-        margin: 5px;
-        background-color: white;
-        border: 1px solid black;
-      }
-      input[type="text"] {
-        width: 100%;
-        margin-bottom: 5px;
-        font-size: 20px;
-      }
-    </style>
+    <meta charset="UTF-8">
+    <title>계산기</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div class="calculator">
-      <input type="text" id="result" value="0" readonly />
-      <input type="button" value="1" onclick="updateResult('1')" />
-      <input type="button" value="2" onclick="updateResult('2')" />
-      <input type="button" value="3" onclick="updateResult('3')" />
-      <input type="button" value="+" onclick="updateResult('+')" />
-      <br />
-      <input type="button" value="4" onclick="updateResult('4')" />
-      <input type="button" value="5" onclick="updateResult('5')" />
-      <input type="button" value="6" onclick="updateResult('6')" />
-      <input type="button" value="-" onclick="updateResult('-')" />
-      <br />
-      <input type="button" value="7" onclick="updateResult('7')" />
-      <input type="button" value="8" onclick="updateResult('8')" />
-      <input type="button" value="9" onclick="updateResult('9')" />
-      <input type="button" value="x" onclick="updateResult('*')" />
-      <br />
-      <input type="button" value="0" onclick="updateResult('0')" />
-      <input type="button" value="C" onclick="clearResult()" />
-      <input type="button" value="=" onclick="calculateResult()" />
-      <input type="button" value="/" onclick="updateResult('/')" />
+      <div class="screen">
+        <input type="text" id="result" value="0" readonly>
+      </div>
+      <div class="buttons">
+        <button id="clear">C</button>
+        <button id="backspace">&larr;</button>
+        <button id="divide">÷</button>
+        <button id="multiply">×</button>
+        <button id="7">7</button>
+        <button id="8">8</button>
+        <button id="9">9</button>
+        <button id="subtract">-</button>
+        <button id="4">4</button>
+        <button id="5">5</button>
+        <button id="6">6</button>
+        <button id="add">+</button>
+        <button id="1">1</button>
+        <button id="2">2</button>
+        <button id="3">3</button>
+        <button id="equals">=</button>
+        <button id="0">0</button>
+        <button id="decimal">.</button>
+      </div>
     </div>
-    <script>
-      function updateResult(value) {
-        var result = document.getElementById("result");
-        if (result.value === "0") {
-          result.value = value;
-        } else {
-          result.value += value;
-        }
-      }
-      function clearResult() {
-        document.getElementById("result").value = "0";
-      }
-      function calculateResult() {
-        var result = document.getElementById("result");
-        result.value = eval(result.value);
-      }
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
