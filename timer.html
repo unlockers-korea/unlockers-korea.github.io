@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>iPod Click Wheel Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f6f6f6;
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 50px;
+        }
+
+        .control-panel {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: inline-block;
+            position: relative;
+            width: 220px;
+        }
+
+        .knob-label {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .ival {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            color: #AAA;
+        }
+
+        #nextButton {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #nextButton:hover {
+            background-color: #555;
+        }
+      
+          .time-modifiers {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .time-btn {
+        padding: 5px 10px;
+        background-color: #eee;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .time-btn:hover {
+        background-color: #ddd;
+    }
+
+    #timer-actions {
+        margin-top: 20px;
+    }
+
+    </style>
+    <script>
+        $(function($) {
+            var settings = ['Interval', 'Repetitions', 'Break Time'];
+            var currentState = 0;
+
+            // Store the values for each setting
+            var values = {
+                'Interval': 0,
+                'Repetitions': 0,
+                'Break Time': 0
+            };
+
+            function toMinuteSecond(value) {
+                var minutes = Math.floor(value / 60);
+                var seconds = value % 60;
+                return (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+            }
+
+            function updateLabel() {
+                $('.knob-label').text(settings[currentState]);
+                i = values[settings[currentState]];  // Retrieve stored value
+                if (settings[currentState] === "Interval" || settings[currentState] === "Break Time") {
+                    $ival.html(toMinuteSecond(i));
+                    if (settings[currentState] === "Interval") {
+                        $(".infinite").trigger('configure', { "fgColor" : "#e57373" }); // Color for Interval
+                    } else {
+                        $(".infinite").trigger('configure', { "fgColor" : "#64b5f6" }); // Color for Break Time
+                    }
+                } else {
+                    $ival.html(i);
+                    $(".infinite").trigger('configure', { "fgColor" : "#81c784" }); // Color for Repetitions
+                }
+            }
+
+            $(".knob").knob({
+                change : function (value) {},
+                release : function (value) {
+                    $("#nextButton").fadeIn(); // Use fadeIn for a smoother appearance
+                },
+                cancel : function () {}
+            });
+
+            var v, up=0, down=0, i=0;
+            var $ival = $("div.ival");
+            var incr = function() { 
+                if (settings[currentState] === "Interval" || settings[currentState] === "Break Time") {
+                    i++;
+                    if(i >= 3600) i = 0;
+                    $ival.html(toMinuteSecond(i));
+                } else {
+                    i++;
+                    $ival.html(i);
+                }
+                      values[settings[currentState]] = i;
+
+            };
+
+            var decr = function() { 
+                if (settings[currentState] === "Interval" || settings[currentState] === "Break Time") {
+                    i--;
+                    if(i < 0) i = 3599;
+                    $ival.html(toMinuteSecond(i));
+                } else {
+                    i--;
+                    if(i < 0) i = 0;
+                    $ival.html(i);
+                }
+              values[settings[currentState]] = i;
+
+            };
+
+            $("input.infinite").knob({
+                        min : 0,
+                        max : 200,
+                        stopper : false,
+                        change : function () {
+                            if(v > this.cv){
+                                if(up){
+                                    decr();
+                                    up=0;
+                                }else{up=1;down=0;}
+                            } else {
+                                if(v < this.cv){
+                                    if(down){
+                                        incr();
+                                        down=0;
+                                    }else{down=1;up=0;}
+                                }
+                            }
+                            v = this.cv;
+                        }
+                    });
+
+            $('#nextButton').click(function() {
+                currentState = (currentState + 1) % settings.length;
+                updateLabel();
+            });
+            $(".time-btn").on("click", function() {
+                var modifier = parseInt($(this).data("modifier"));
+                i += modifier;
+
+                if (settings[currentState] === "Interval" || settings[currentState] === "Break Time") {
+                    if (i < 0) i = 0;
+                    if (i >= 3600) i = 3599;
+                    $ival.html(toMinuteSecond(i));
+                } 
+            });
+
+            updateLabel();
+        });
+    </script>
+</head>
+<body>
+    <h1>iPod Click Wheel Demo</h1>
+    <div class="control-panel">
+        <div class="knob-label">Interval</div>
+        <input class="infinite" value="0" data-width="190" data-thickness=".2" data-fgcolor="#AAAAAA" data-bgcolor="#eeeeee" data-displayinput="false" data-cursor="true">
+        <div class="ival">0</div>
+        <button id="nextButton">Next</button>
+    </div>
+</body>
+</html>
