@@ -1,0 +1,95 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #ffffff;
+    text-align: center;
+    padding: 50px 0;
+    margin: 0;
+    color: #333333;
+}
+
+h1 {
+    color: #333333;
+    margin-bottom: 50px;
+}
+
+.control-panel {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    padding: 20px;
+    display: inline-block;
+    position: relative;
+    width: 220px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.knob-label {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333333;
+}
+
+.ival {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: #666666;
+}
+
+#nextButton {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    background-color: #dddddd;
+    color: #333333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#nextButton:hover {
+    background-color: #cccccc;
+}
+
+.progress {
+    width: 100%;
+    background-color: #ddd;
+    margin-top: 20px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 20px;
+    background-color: #4CAF50;
+}
+
+.status-indicator {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #333333;
+}
+
+/* Add a smooth transition to the progress bar */
+.progress-bar {
+    transition: width 0.3s ease-in-out;
+}
+
+/* Different background colors for status indicator */
+.status-interval {
+    background-color: #e57373;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.status-break {
+    background-color: #64b5f6;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
